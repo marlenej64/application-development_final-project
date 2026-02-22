@@ -26,7 +26,7 @@ const pointLayer = new ol.layer.Vector({
     source: schuelerSource,
     style: new ol.style.Style({
         image: new ol.style.Circle({
-            radius: 8,
+            radius: 4,
             fill: new ol.style.Fill({ color: 'red' }),
             stroke: new ol.style.Stroke({ color: 'white', width: 2 })
         })
@@ -123,10 +123,10 @@ map.on('singleclick', function (evt) {
             }
 
               // 4. RISIKO-LOGIK (Optional, falls deine Sidebar das braucht)
-                let rText = "Gering";
+                let rText = "Low";
                 let rClass = "risk-low";
-                if (sealingValue > 30) { rText = "Mittel"; rClass = "risk-medium"; }
-                if (sealingValue > 75) { rText = "Hoch"; rClass = "risk-high"; }
+                if (sealingValue > 30) { rText = "Medium"; rClass = "risk-medium"; }
+                if (sealingValue > 75) { rText = "High"; rClass = "risk-high"; }
 
                 // 5. SIDEBAR UPDATE: Jetzt ist calculatedArea definiert!
                 updateSidebar(calculatedArea, sealingValue, rText, rClass);
@@ -143,6 +143,6 @@ function updateSidebar(area, sealing, risk, cssClass) {
     document.getElementById('res-sealing').innerText = sealing + " %";
     
     const badge = document.getElementById('risk-badge');
-    badge.innerText = "Hitze-Risiko: " + risk;
+    badge.innerText = "Heat risk: " + risk;
     badge.className = cssClass; 
 }
