@@ -1,0 +1,110 @@
+/* Grundlayout */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+}
+
+#app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Kartenbereich */
+#map {
+    flex: 1; /* Nimmt den restlichen Platz ein */
+    background-color: #eee;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 350px;
+    background-color: #ffffff;
+    border-left: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+header {
+    padding: 20px;
+    background-color: #2c3e50;
+    color: white;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.subtitle {
+    margin: 5px 0 0 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+#analysis-box {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+h2 {
+    font-size: 1.1rem;
+    color: #333;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+
+#placeholder-text {
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* Ergebnis-Anzeige */
+.hidden {
+    display: none;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    font-size: 0.95rem;
+}
+
+.label {
+    font-weight: bold;
+    color: #555;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
+
+#risk-badge {
+    margin-top: 20px;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Farben für den Risiko-Index */
+.risk-low { background-color: #2ecc71; color: white; }
+.risk-medium { background-color: #f1c40f; color: black; }
+.risk-high { background-color: #e74c3c; color: white; }
+
+footer {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+    color: #95a5a6;
+    border-top: 1px solid #eee;
+}
