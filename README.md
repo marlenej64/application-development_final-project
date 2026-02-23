@@ -5,6 +5,11 @@
 This project was developed as part of a university assignment to visualize the impact of soil sealing in Austria using Citizen Science data. The interactive 
 dashboard allows users to analyze sealing levels at any given location and understand the environmental footprint in specific areas.
 
+## Project Demo
+Below you can see the application in action. Even without the WPS extension, the frontend-based sampling calculates the soil sealing levels dynamically upon clicking:
+
+![Project Demo](./Video.gif)
+
 ## Features
 
 * **Interactive Map:** Visualization of soil sealing raster data and citizen locations (vector data) provided via GeoServer.
