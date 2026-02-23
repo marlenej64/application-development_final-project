@@ -8,7 +8,7 @@ dashboard allows users to analyze sealing levels at any given location and under
 ## Project Demo
 Below you can see the application in action. Even without the WPS extension, the frontend-based sampling calculates the soil sealing levels dynamically upon clicking:
 
-![Project Demo](./Video.gif)
+![Project Demo](./demo_video.gif)
 
 ## Features
 
