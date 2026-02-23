@@ -1,12 +1,12 @@
-// 1. Konfiguration
+// 1. Configuration
 const geoserverBaseUrl = 'http://localhost:8080/geoserver';
 const workspace = 'climate_agents';
 const pointLayerName = 'vektordaten_oesterreich';
 
-// 2. Vektor-Quelle (WFS)
+// 2. Vektor Source (WFS)
 const schuelerSource = new ol.source.Vector({
     format: new ol.format.GeoJSON({
-        // Das ist der entscheidende Teil:
+        // Coordinatesystem
         dataProjection: 'EPSG:4326', 
         featureProjection: 'EPSG:3857'
     }),
@@ -14,14 +14,14 @@ const schuelerSource = new ol.source.Vector({
     strategy: ol.loadingstrategy.bbox
 });
 
-// Automatischer Zoom auf die Daten, sobald sie geladen sind
+// Automatic zoom on the data as soon as they are loaded
 schuelerSource.once('change', function() {
     if (schuelerSource.getState() === 'ready') {
         map.getView().fit(schuelerSource.getExtent(), { padding: [50, 50, 50, 50], duration: 1000 });
     }
 });
 
-// 3. Layer-Definitionen
+// 3. Layer definiton
 const pointLayer = new ol.layer.Vector({
     source: schuelerSource,
     style: new ol.style.Style({
@@ -55,7 +55,7 @@ const bufferLayer = new ol.layer.Vector({
     zIndex: 10
 });
 
-// 4. Karte initialisieren
+// 4. Initialising map
 const map = new ol.Map({
     target: 'map',
     layers: [
@@ -70,20 +70,20 @@ const map = new ol.Map({
     })
 });
 
-// 5. Klick-Interaktion & Analyse
+// 5. Click Interaction & Analysis
 map.on('singleclick', function (evt) {
     const clickCoords = evt.coordinate;
     
-    // GEOPROCESSING: Puffer erstellen (500m)
+    // GEOPROCESSING: Create Buffer (500m)
     bufferSource.clear(); 
     const myCircle = new ol.geom.Circle(clickCoords, 500);
     const myPolygon = ol.geom.Polygon.fromCircle(myCircle, 64);
     bufferSource.addFeature(new ol.Feature(myPolygon));
 
-    // BERECHNUNG: Fläche im Frontend berechnen
+    // CALCULATION: Calculate area in frontend
     const calculatedArea = ol.sphere.getArea(myPolygon);
 
-    // RASTER-ABFRAGE: GetFeatureInfo URL generieren
+    // RASTER-QUERY: Generate GetFeatureInfo URL
     const viewRes = map.getView().getResolution();
     const infoUrl = versiegelungLayer.getSource().getFeatureInfoUrl(
         clickCoords, viewRes, 'EPSG:3857',
@@ -97,44 +97,41 @@ map.on('singleclick', function (evt) {
             let sealingValue = 0;
 
             if (json.features && json.features.length > 0) {
-                // Wir nehmen den Wert, den der GeoServer uns liefert
+                // Value provided by the GeoServer
                 let rawVal = json.features[0].properties.GRAY_INDEX || 
                             json.features[0].properties.value || 0;
 
-                // ECHTE BERECHNUNG:
-                // Wir wandeln den Grauwert (0-255) in Prozent um.
-                // Damit das nicht nur 0 oder 100 ist, MUSS im GeoServer 
-                // "Bilinear Interpolation" aktiv sein (wie wir vorhin besprochen haben).
+                // REAL CALCULATION:
+                // Convert the grayscale value (0-255) to a percentage.
+                // So that it's not just 0 or 100, in the GeoServer,"Bilinear Interpolation" is active.
                 sealingValue = Math.round(((255 - rawVal) / 255) * 100);
             }
 
-            // Wenn der Wert immer noch nur 0 oder 100 ist, liegt es daran,
-            // dass wir genau die Pixelmitte treffen. 
-            // Ein kleiner Trick: Wir addieren einen winzigen "Versatz" 
-            // basierend auf den Koordinaten, um die Kantenunschärfe zu simulieren:
+            // If the value is still only 0 or 100, it is because that we hit the exact center of the pixel.
+            // We add a tiny "offset" based on the coordinates to simulate the edge blur:
             if (sealingValue > 0 && sealingValue < 100) {
-                // Wert bleibt wie er ist (echte Interpolation)
+                // Value remains as it is (true interpolation)
             } else if (sealingValue === 100) {
-                // Simuliert, dass im 500m Puffer auch ein paar Grünstücke sind
+                // Simulating that there are a few green pieces in the 500m buffer
                 sealingValue = 100 - (Math.abs(Math.round(clickCoords[0] % 15))); 
             } else {
-                // Simuliert, dass im 500m Puffer auch ein paar versiegelte Wege sind
+                // Simulates that there are also a few sealed paths in the 500m buffer
                 sealingValue = Math.abs(Math.round(clickCoords[1] % 12));
             }
 
-              // 4. RISIKO-LOGIK (Optional, falls deine Sidebar das braucht)
+              // 4. Heat risk in this area
                 let rText = "Low";
                 let rClass = "risk-low";
                 if (sealingValue > 30) { rText = "Medium"; rClass = "risk-medium"; }
                 if (sealingValue > 75) { rText = "High"; rClass = "risk-high"; }
 
-                // 5. SIDEBAR UPDATE: Jetzt ist calculatedArea definiert!
+                // 5. SIDEBAR UPDATE: Now calculatedArea is defined
                 updateSidebar(calculatedArea, sealingValue, rText, rClass);
         });
     }
 });
 
-// 6. UI-Funktion
+// 6. UI-Function
 function updateSidebar(area, sealing, risk, cssClass) {
     document.getElementById('placeholder-text').classList.add('hidden');
     document.getElementById('results').classList.remove('hidden');
