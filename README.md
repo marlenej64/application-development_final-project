@@ -22,6 +22,9 @@ Below you can see the application in action two different times. Even without th
 * **Frontend:** Built with HTML5, CSS3, and JavaScript using the OpenLayers API.
 * **Backend:** GeoServer was utilized to serve geospatial data through WMS and WFS interfaces.
 
+* The raster layer (.tif) is available at: https://docs.umweltbundesamt.at/s/2nxD5q86ygA24q8
+* The vektor layer (.shp) is available in my GitHub repository: vektordaten_österreich.zip
+
 ## Technical Limitation: WPS Extension
 
 The original goal was to perform precise area-based calculations using the **GeoServer WPS (Web Processing Service)** and the `gs:Aggregate` process.
