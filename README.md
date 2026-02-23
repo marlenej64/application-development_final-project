@@ -6,7 +6,7 @@ This project was developed as part of a university assignment to visualize the i
 dashboard allows users to analyze sealing levels at any given location and understand the environmental footprint in specific areas.
 
 ## Project Demo
-Below you can see the application in action two times. Even without the WPS extension, the frontend-based sampling calculates the soil sealing levels dynamically upon clicking:
+Below you can see the application in action two different times. Even without the WPS extension, the frontend-based sampling calculates the soil sealing levels dynamically upon clicking:
 
 ![Project Demo](./demo_video.gif) ![Project Demo](./Video.gif)
 
