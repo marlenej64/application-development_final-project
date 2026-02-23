@@ -38,3 +38,8 @@ approach meets the project's requirements.
 
 If administrator rights were available, the WPS plugin could be installed to utilize server-side "Zonal Statistics," which would offer even higher precision 
 for area-based environmental analysis.
+
+---
+
+## AI Disclaimer
+This project was developed with the assistance of Artificial Intelligence to support complex coding tasks, troubleshoot technical server errors, and assist in the documentation process. All AI-generated suggestions were reviewed, adapted, and tested to ensure they align with the goals and functional requirements.
